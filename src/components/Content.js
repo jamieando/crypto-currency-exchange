@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { exchangeSelector } from '../store/selectors'
-import { loadAllOrders, subscribeToEvents } from '../store/interactions'
+import {
+  exchangeSelector,
+  tokenSelector,
+  web3Selector
+} from '../store/selectors'
+import { subscribeToEvents } from '../store/interactions'
 import OrderBook from './OrderBook'
 import Trades from './Trades'
 import MyTransactions from './MyTransactions'
 import PriceChart from './PriceChart'
 import Balance from './Balance'
+import NewOrder from './NewOrder'
 
 class Content extends Component {
   componentDidMount() {
@@ -14,9 +19,8 @@ class Content extends Component {
   }
 
   async loadBlockchainData(props) {
-    const { dispatch, exchange } = props
-    await loadAllOrders(exchange, dispatch)
-    await subscribeToEvents(exchange, dispatch)
+    const { dispatch, exchange, token, web3 } = props
+    await subscribeToEvents(dispatch, web3, exchange, token)
   }
 
   render() {
@@ -24,22 +28,14 @@ class Content extends Component {
       <div className="content">
         <div className="vertical-split">
           <Balance />
-          <div className="card bg-dark text-white">
-            <div className="card-header">
-              Card Title
-            </div>
-            <div className="card-body">
-              <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="/#" className="card-link">Card link</a>
-            </div>
-          </div>
+          <NewOrder />
         </div>
         <OrderBook />
         <div className="vertical-split">
           <PriceChart />
           <MyTransactions />
         </div>
-          <Trades />
+        <Trades />
       </div>
     )
   }
@@ -47,7 +43,9 @@ class Content extends Component {
 
 function mapStateToProps(state) {
   return {
-    exchange: exchangeSelector(state)
+    exchange: exchangeSelector(state),
+    token: tokenSelector(state),
+    web3: web3Selector(state)
   }
 }
 
