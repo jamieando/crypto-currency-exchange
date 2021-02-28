@@ -43,6 +43,7 @@ const showForm = (props) => {
             event.preventDefault()
             makeBuyOrder(dispatch, exchange, token, web3, buyOrder, account)
           }}>
+          <p>&nbsp;</p>
           <div className="form-group small">
             <label>Buy NOV</label>
             <div className="input-group">
@@ -79,6 +80,7 @@ const showForm = (props) => {
           event.preventDefault()
           makeSellOrder(dispatch, exchange, token, web3, sellOrder, account)
         }}>
+        <p>&nbsp;</p>
         <div className="form-group small">
           <label>Sell NOV</label>
           <div className="input-group">
